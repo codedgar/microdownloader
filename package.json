@@ -1,0 +1,88 @@
+{
+  "name": "microdownloader",
+  "productName": "Microdownloader",
+  "version": "0.1.0",
+  "description": "A minimal, open-source GUI for yt-dlp. macOS first.",
+  "main": "main.js",
+  "author": {
+    "name": "Edgar Perez",
+    "email": "codedgar.dev@gmail.com",
+    "url": "https://github.com/codedgar"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/codedgar/microdownloader",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codedgar/microdownloader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/codedgar/microdownloader/issues"
+  },
+  "keywords": [
+    "yt-dlp",
+    "youtube-dl",
+    "video-downloader",
+    "youtube",
+    "downloader",
+    "macos",
+    "electron"
+  ],
+  "scripts": {
+    "fetch-binaries": "bash scripts/fetch-binaries.sh",
+    "fetch-binaries:arm64": "FFMPEG_ARCH=arm64 bash scripts/fetch-binaries.sh",
+    "fetch-binaries:x64": "FFMPEG_ARCH=x86_64 bash scripts/fetch-binaries.sh",
+    "postinstall": "bash scripts/fetch-binaries.sh || echo 'Skipped fetch-binaries (run npm run fetch-binaries manually).'",
+    "start": "electron .",
+    "build:arm64": "npm run fetch-binaries:arm64 && electron-builder --mac --arm64",
+    "build:x64": "npm run fetch-binaries:x64 && electron-builder --mac --x64",
+    "build": "npm run build:arm64 && npm run build:x64"
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.codedgar.microdownloader",
+    "productName": "Microdownloader",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer.js",
+      "index.html",
+      "style.css",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/bin",
+        "to": "resources/bin",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": [
+        { "target": "dmg", "arch": ["arm64", "x64"] }
+      ],
+      "identity": "Edgar Ramon Perez Godoy (H6JGGP62Q9)",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist",
+      "notarize": {
+        "teamId": "H6JGGP62Q9"
+      },
+      "binaries": [
+        "resources/bin/yt-dlp",
+        "resources/bin/ffmpeg"
+      ]
+    },
+    "dmg": {
+      "title": "Microdownloader ${version}",
+      "contents": [
+        { "x": 130, "y": 220, "type": "file" },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    }
+  }
+}
