@@ -110,7 +110,7 @@ function showOnly(card) {
 function setDownloading(on, label) {
   downloading = on;
   downloadBtn.disabled = on;
-  if (on) downloadBtn.textContent = label || 'Downloading…';
+  if (on) downloadBtn.textContent = label || 'Downloading';
   else refreshCount();
 }
 
@@ -154,7 +154,7 @@ function renderQueue(items, activeIdx) {
 downloadBtn.addEventListener('click', async () => {
   const urls = parseUrls(urlInput.value);
   if (!urls.length) {
-    errorText.textContent = 'Paste at least one URL.';
+    errorText.textContent = 'No URL provided.';
     showOnly(errorCard);
     urlInput.focus();
     return;
@@ -172,7 +172,7 @@ downloadBtn.addEventListener('click', async () => {
     progressLabel.textContent = items.length > 1
       ? `Downloading ${i + 1} / ${items.length}`
       : 'Downloading';
-    setDownloading(true, items.length > 1 ? `Downloading ${i + 1}/${items.length}…` : 'Downloading…');
+    setDownloading(true, items.length > 1 ? `Downloading ${i + 1}/${items.length}` : 'Downloading');
     resetProgress();
     renderQueue(items, i);
 

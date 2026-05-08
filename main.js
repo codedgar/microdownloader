@@ -4,6 +4,9 @@ const fs = require('fs');
 const os = require('os');
 const { spawn } = require('child_process');
 
+let liquidGlass = null;
+try { liquidGlass = require('electron-liquid-glass'); } catch {}
+
 const isPackaged = app.isPackaged;
 const resourcesRoot = isPackaged ? process.resourcesPath : __dirname;
 const ytdlpPath = path.join(resourcesRoot, 'resources', 'bin', 'yt-dlp');
@@ -26,6 +29,8 @@ let mainWindow;
 let activeJob = null;
 
 function createWindow() {
+  const useLiquidGlass = process.platform === 'darwin' && !!liquidGlass;
+
   mainWindow = new BrowserWindow({
     width: 540,
     height: 420,
@@ -33,9 +38,10 @@ function createWindow() {
     minHeight: 360,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 18 },
-    backgroundColor: '#151619',
-    vibrancy: 'under-window',
-    visualEffectState: 'active',
+    transparent: useLiquidGlass,
+    backgroundColor: useLiquidGlass ? '#00000000' : '#151619',
+    vibrancy: useLiquidGlass ? undefined : 'under-window',
+    visualEffectState: useLiquidGlass ? undefined : 'active',
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -43,6 +49,20 @@ function createWindow() {
     },
   });
   mainWindow.loadFile('index.html');
+
+  if (useLiquidGlass) {
+    mainWindow.webContents.once('did-finish-load', () => {
+      try {
+        const id = liquidGlass.addView(mainWindow.getNativeWindowHandle());
+        if (id !== -1 && liquidGlass.unstable_setVariant) {
+          liquidGlass.unstable_setVariant(id, 1);
+        }
+        mainWindow.setWindowButtonVisibility?.(true);
+      } catch (e) {
+        console.warn('liquid glass init failed:', e.message);
+      }
+    });
+  }
 }
 
 function updateYtDlp() {
