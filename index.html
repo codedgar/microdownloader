@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';" />
+  <title>Microdownloader</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="titlebar"></div>
+
+  <main class="container">
+    <header class="brand">
+      <span class="logo-dot" aria-hidden="true"></span>
+      <h1 class="brand-name">microdownloader</h1>
+    </header>
+
+    <section class="card input-card">
+      <div class="input-head">
+        <label class="micro-label" for="url"><span id="urlLabel">url</span></label>
+        <span id="urlCount" class="count-pill">0</span>
+      </div>
+      <div class="input-row">
+        <textarea
+          id="url"
+          rows="1"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="https://…"
+        ></textarea>
+        <button id="paste" class="ghost-btn" title="Paste from clipboard" aria-label="Paste">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M16 5h2a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2"/></svg>
+        </button>
+      </div>
+
+      <div class="action-row">
+        <div class="format-row" role="tablist" aria-label="Format">
+          <button class="chip active" data-format="auto" role="tab" aria-selected="true">Auto</button>
+          <button class="chip" data-format="video" role="tab" aria-selected="false">Video</button>
+          <button class="chip" data-format="audio" role="tab" aria-selected="false">Audio</button>
+        </div>
+        <div class="btn-well">
+          <button id="download" class="btn-primary">Download</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="progressCard" class="card progress-card hidden">
+      <div class="progress-head">
+        <span class="micro-label" id="progressLabel">Downloading</span>
+        <button id="cancel" class="link-btn">Cancel</button>
+      </div>
+      <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
+      <div class="progress-meta">
+        <span id="metaPct">0%</span>
+        <span id="metaSize">— / —</span>
+        <span id="metaSpeed">—</span>
+        <span id="metaEta">eta —</span>
+      </div>
+      <div id="queueList" class="queue-list"></div>
+    </section>
+
+    <section id="resultCard" class="card result-card hidden">
+      <div class="result-head">
+        <div class="result-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="result-text">
+          <div class="result-title" id="resultTitle">Saved</div>
+          <div id="resultPath" class="result-path">—</div>
+        </div>
+        <div class="result-actions">
+          <button id="reveal" class="ghost-btn-wide">Show</button>
+          <button id="again" class="ghost-btn-wide">New</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="errorCard" class="card error-card hidden">
+      <div class="micro-label error-label">Error</div>
+      <div id="errorText" class="error-text">—</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <button id="folderBtn" class="folder-btn" title="Change save folder">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+      <span id="saveDir">—</span>
+    </button>
+  </footer>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

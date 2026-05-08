@@ -41,6 +41,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+# Bundled binaries (fetched via scripts/fetch-binaries.sh)
+resources/bin/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 
