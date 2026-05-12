@@ -44,6 +44,9 @@ jspm_packages/
 # Bundled binaries (fetched via scripts/fetch-binaries.sh)
 resources/bin/
 
+# Claude Code session data
+.claude/
+
 # Snowpack dependency directory (https://snowpack.dev/)
 web_modules/
 

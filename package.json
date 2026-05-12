@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "electron": "^31.0.0",
-    "electron-builder": "^24.13.3"
+    "electron-builder": "^26.8.1"
   },
   "build": {
     "appId": "com.codedgar.microdownloader",
@@ -50,14 +50,24 @@
       "renderer.js",
       "index.html",
       "style.css",
-      "package.json"
+      "package.json",
+      "assets/**/*",
+      "!assets/readme-*"
+    ],
+    "asarUnpack": [
+      "**/*.node",
+      "node_modules/electron-liquid-glass/**/*"
     ],
     "extraResources": [
       {
         "from": "resources/bin",
         "to": "resources/bin",
         "filter": [
-          "**/*"
+          "**/*",
+          "!__MACOSX",
+          "!__MACOSX/**",
+          "!._*",
+          "!.DS_Store"
         ]
       }
     ],
@@ -77,9 +87,7 @@
       "gatekeeperAssess": false,
       "entitlements": "entitlements.mac.plist",
       "entitlementsInherit": "entitlements.mac.plist",
-      "notarize": {
-        "teamId": "H6JGGP62Q9"
-      },
+      "notarize": true,
       "binaries": [
         "resources/bin/yt-dlp",
         "resources/bin/ffmpeg"

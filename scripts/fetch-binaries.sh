@@ -66,6 +66,13 @@ fi
 
 curl -fL --progress-bar -o "$TMP_ZIP" "$FFMPEG_URL"
 unzip -o -q "$TMP_ZIP" -d "$BIN_DIR"
+
+# Some ffmpeg zip distributions ship a __MACOSX/ AppleDouble sidecar dir
+# (._ffmpeg etc). Those metadata files break notarization when bundled
+# into the .app, so strip them along with any quarantine xattrs.
+rm -rf "$BIN_DIR/__MACOSX"
+xattr -cr "$BIN_DIR" 2>/dev/null || true
+
 chmod +x "$BIN_DIR/ffmpeg"
 
 # ---------- summary ----------

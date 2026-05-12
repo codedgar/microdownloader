@@ -55,7 +55,7 @@ function createWindow() {
       try {
         const id = liquidGlass.addView(mainWindow.getNativeWindowHandle());
         if (id !== -1 && liquidGlass.unstable_setVariant) {
-          liquidGlass.unstable_setVariant(id, 1);
+          liquidGlass.unstable_setVariant(id, liquidGlass.GlassMaterialVariant.regular);
         }
         mainWindow.setWindowButtonVisibility?.(true);
       } catch (e) {
